@@ -1,0 +1,9 @@
+{:paths
+ ["src/main"]
+
+ :deps
+ {org.clojure/clojure {:mvn/version "1.11.0-alpha2"}
+  com.wsscode/pathom3 {:git/url "https://github.com/wilkerlucio/pathom3" :sha "ccd6b59102eaa55b598db319480bc484b70dde8b"}
+  cheshire/cheshire   {:mvn/version "5.10.1"}
+  meander/epsilon     {:mvn/version "0.0.602"}
+  http-kit/http-kit   {:mvn/version "2.5.3"}}}
