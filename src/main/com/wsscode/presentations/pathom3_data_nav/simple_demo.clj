@@ -1,4 +1,4 @@
-(ns com.wsscode.presentations.pathom3-data-nav.micro-services.simple-demo
+(ns com.wsscode.presentations.pathom3-data-nav.simple-demo
   (:require [com.wsscode.pathom3.interface.eql :as p.eql]
             [com.wsscode.pathom3.connect.operation :as pco]
             [com.wsscode.pathom3.connect.indexes :as pci]
