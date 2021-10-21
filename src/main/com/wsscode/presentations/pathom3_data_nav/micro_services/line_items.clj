@@ -23,8 +23,13 @@
       :acme.line-item/quantity]}]}
   (get order-line-items-db id))
 
+(pco/defresolver line-item-total
+  [{:keys [acme.line-item/price
+           acme.line-item/quantity]}]
+  {:acme.line-item/price-total (* price quantity)})
+
 (def registry
-  [order-line-items])
+  [order-line-items line-item-total])
 
 (def env
   (pci/register registry))
@@ -34,5 +39,6 @@
 
   (p.eql/process env
     {:acme.order/id 1628545763873}
-    [:acme.order/line-items]))
+    [{:acme.order/line-items
+      [:acme.line-item/price-total]}]))
 

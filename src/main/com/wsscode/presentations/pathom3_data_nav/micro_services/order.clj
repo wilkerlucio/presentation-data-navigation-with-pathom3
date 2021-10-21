@@ -18,8 +18,22 @@
     :acme.order/discount]}
   (get orders-db id))
 
+(pco/defresolver order-items-total [{:acme.order/keys [line-items]}]
+  {::pco/input
+   [{:acme.order/line-items
+     [:acme.line-item/price-total]}]}
+  {:acme.order/items-total
+   (transduce (map :acme.line-item/price-total) + line-items)})
+
+(pco/defresolver order-grand-total
+  [{:acme.order/keys [items-total delivery-fee discount]}]
+  {:acme.order/grand-total (-> (+ items-total delivery-fee)
+                               (- discount))})
+
 (def registry
-  [order-by-id])
+  [order-by-id
+   order-items-total
+   order-grand-total])
 
 (def env
   (pci/register registry))
@@ -29,12 +43,6 @@
 
   (p.eql/process env
     {:acme.order/id 1628545763873}
-    [:acme.order/delivery-fee])
-
-  (p.eql/process env
-    {:acme.user/full-name "Wilker Lucio da Silva"}
-    [:acme.user/last-name])
-
-  (->> ((requiring-resolve 'faker.address /))
-       (take 10)))
+    [:acme.order/delivery-fee
+     :acme.order/items-total]))
 
