@@ -10,6 +10,9 @@
    {:acme.order/line-items
     [{:acme.line-item/product-id 1
       :acme.line-item/price      28.8
+      :acme.line-item/quantity   1}
+     {:acme.line-item/product-id 2
+      :acme.line-item/price      38.9
       :acme.line-item/quantity   1}]}})
 
 (pco/defresolver order-line-items [{:acme.order/keys [id]}]
@@ -27,7 +30,7 @@
   (pci/register registry))
 
 (comment
-  (ps/start-server env {::ps/port 3012})
+  (ps/start-server env {::ps/port 3013})
 
   (p.eql/process env
     {:acme.order/id 1628545763873}
