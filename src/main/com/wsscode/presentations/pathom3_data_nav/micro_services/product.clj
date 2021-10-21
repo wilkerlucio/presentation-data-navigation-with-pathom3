@@ -21,7 +21,11 @@
   [product-by-id])
 
 (def env
-  (pci/register registry))
+  (-> {::pci/index-source-id 'product}
+      (pci/register registry)))
+
+(def request
+  (p.eql/boundary-interface env))
 
 (comment
   (ps/start-server env {::ps/port 3013})

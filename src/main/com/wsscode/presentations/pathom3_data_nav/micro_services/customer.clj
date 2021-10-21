@@ -22,7 +22,8 @@
   [user-by-id])
 
 (def env
-  (pci/register registry))
+  (-> {::pci/index-source-id 'customers}
+      (pci/register registry)))
 
 (def request
   (p.eql/boundary-interface env))

@@ -27,7 +27,11 @@
   [user-shipping-address])
 
 (def env
-  (pci/register registry))
+  (-> {::pci/index-source-id 'shipping}
+      (pci/register registry)))
+
+(def request
+  (p.eql/boundary-interface env))
 
 (comment
   (ps/start-server env {::ps/port 3014})

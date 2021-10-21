@@ -9,13 +9,15 @@
   {1628545763873
    {:acme.order/delivery-state :acme.order.delivery-state/waiting-transport
     :acme.order/delivery-fee   11
-    :acme.order/discount       0}})
+    :acme.order/discount       0
+    :acme.user/id              1}})
 
 (pco/defresolver order-by-id [{:acme.order/keys [id]}]
   {::pco/output
    [:acme.order/delivery-state
     :acme.order/delivery-fee
-    :acme.order/discount]}
+    :acme.order/discount
+    :acme.user/id]}
   (get orders-db id))
 
 (pco/defresolver order-items-total [{:acme.order/keys [line-items]}]
@@ -36,7 +38,11 @@
    order-grand-total])
 
 (def env
-  (pci/register registry))
+  (-> {::pci/index-source-id 'order}
+      (pci/register registry)))
+
+(def request
+  (p.eql/boundary-interface env))
 
 (comment
   (ps/start-server env {::ps/port 3012})

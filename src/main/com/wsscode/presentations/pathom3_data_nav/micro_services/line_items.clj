@@ -8,17 +8,17 @@
 (def order-line-items-db
   {1628545763873
    {:acme.order/line-items
-    [{:acme.line-item/product-id 1
+    [{:acme.product/id 1
       :acme.line-item/price      28.8
       :acme.line-item/quantity   1}
-     {:acme.line-item/product-id 2
+     {:acme.product/id 2
       :acme.line-item/price      38.9
       :acme.line-item/quantity   1}]}})
 
 (pco/defresolver order-line-items [{:acme.order/keys [id]}]
   {::pco/output
    [{:acme.order/line-items
-     [:acme.line-item/product-id
+     [:acme.product/id
       :acme.line-item/price
       :acme.line-item/quantity]}]}
   (get order-line-items-db id))
@@ -32,7 +32,11 @@
   [order-line-items line-item-total])
 
 (def env
-  (pci/register registry))
+  (-> {::pci/index-source-id 'line-items}
+      (pci/register registry)))
+
+(def request
+  (p.eql/boundary-interface env))
 
 (comment
   (ps/start-server env {::ps/port 3011})
