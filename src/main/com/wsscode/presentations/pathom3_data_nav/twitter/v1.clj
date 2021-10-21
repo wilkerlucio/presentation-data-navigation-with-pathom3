@@ -192,6 +192,7 @@
       :twitter.tweet/source
       :twitter.tweet/text
       :twitter.tweet/truncated
+
       :twitter.user/contributors-enabled
       :twitter.user/created-at
       :twitter.user/default-profile
@@ -263,10 +264,12 @@
       :twitter.user/screen-name
       :twitter.user/name
       :twitter.user/verified
+
       :twitter.tweet/text
       :twitter.tweet/created-at
       :twitter.tweet/source
       :twitter.tweet/retweet-count
+      ; quote tweets count not available
       :twitter.tweet/favorite-count])
 
   ; endregion
@@ -294,7 +297,7 @@
       :twitter.user/screen-name
       :twitter.user/name
       :twitter.user/verified
-      :twitter.user/profile-background-image-url
+      :twitter.user/profile-banner-url
       :twitter.user/description
       :twitter.user/location
       :twitter.user/url

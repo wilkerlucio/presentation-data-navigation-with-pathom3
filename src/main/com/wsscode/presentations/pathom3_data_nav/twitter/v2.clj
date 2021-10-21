@@ -208,7 +208,7 @@
       :twitter.user/screen-name
       :twitter.user/name
       :twitter.user/verified
-      ; not available - :twitter.user/profile-background-image-url
+      ; not available on v2 - :twitter.user/profile-background-image-url
       :twitter.user/description
       :twitter.user/location
       :twitter.user/url
