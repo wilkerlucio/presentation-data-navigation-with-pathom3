@@ -24,7 +24,7 @@
   (pci/register registry))
 
 (comment
-  (ps/start-server env {::ps/port 3014})
+  (ps/start-server env {::ps/port 3013})
 
   (p.eql/process env
     {:acme.product/id 2}

@@ -30,7 +30,7 @@
   (pci/register registry))
 
 (comment
-  (ps/start-server env {::ps/port 3013})
+  (ps/start-server env {::ps/port 3011})
 
   (p.eql/process env
     {:acme.order/id 1628545763873}
