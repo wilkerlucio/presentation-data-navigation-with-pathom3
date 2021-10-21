@@ -1,14 +1,16 @@
 (ns com.wsscode.presentations.pathom3-data-nav.twitter.v2
-  (:require [com.wsscode.pathom3.connect.operation :as pco]
-            [cheshire.core :as json]
-            [meander.epsilon :as m]
-            [com.wsscode.pathom3.format.eql :as pf.eql]
-            [com.wsscode.pathom3.connect.indexes :as pci]
-            [com.wsscode.pathom3.interface.async.eql :as p.a.eql]
-            [com.wsscode.presentations.pathom3-data-nav.util :as u :refer [p-> p->>]]
+  (:require [cheshire.core :as json]
             [clojure.string :as str]
             [com.wsscode.misc.coll :as coll]
-            [com.wsscode.pathom3.connect.built-in.resolvers :as pbir]))
+            [com.wsscode.pathom3.connect.built-in.resolvers :as pbir]
+            [com.wsscode.pathom3.connect.indexes :as pci]
+            [com.wsscode.pathom3.connect.operation :as pco]
+            [com.wsscode.pathom3.connect.planner :as pcp]
+            [com.wsscode.pathom3.format.eql :as pf.eql]
+            [com.wsscode.pathom3.interface.async.eql :as p.a.eql]
+            [com.wsscode.presentations.pathom3-data-nav.util :as u :refer [p-> p->>]]
+            [edn-query-language.core :as eql]
+            [meander.epsilon :as m]))
 
 (def request (u/make-request "https://api.twitter.com/2"))
 
@@ -83,7 +85,6 @@
                          :com.wsscode.pathom3.connect.planner/expects)
         field-params (expects->fields expects
                        {"user" "author_id"})]
-    (clojure.pprint/pprint field-params)
     (p-> (request env
            {:path         (str "/tweets/" id)
             :query-params field-params})
@@ -92,7 +93,56 @@
 
 (pco/defresolver tweet-stats [{:keys [twitter.tweet/public-metrics]}]
   {:twitter.tweet/retweet-count (get public-metrics "retweet_count")
-   :twitter.tweet/like-count (get public-metrics "like_count")})
+   :twitter.tweet/like-count    (get public-metrics "like_count")})
+
+(pco/defresolver get-user
+  [env {:keys [twitter.user/username]}]
+  {::pco/output
+   [:twitter.user/created-at
+    :twitter.user/description
+    :twitter.user/entities
+    :twitter.user/id
+    :twitter.user/location
+    :twitter.user/name
+    :twitter.user/pinned-tweet-id
+    :twitter.user/profile-image-url
+    :twitter.user/protected
+    :twitter.user/public-metrics
+    :twitter.user/url
+    :twitter.user/username
+    :twitter.user/verified
+    :twitter.user/withheld
+
+    {:twitter.user/pinned-tweet
+     [:twitter.tweet/attachments
+      :twitter.tweet/author-id
+      :twitter.tweet/context-annotations
+      :twitter.tweet/conversation-id
+      :twitter.tweet/created-at
+      :twitter.tweet/entities
+      :twitter.tweet/geo
+      :twitter.tweet/id
+      :twitter.tweet/in-reply-to-user-id
+      :twitter.tweet/lang
+      :twitter.tweet/non-public-metrics
+      :twitter.tweet/organic-metrics
+      :twitter.tweet/possibly-sensitive
+      :twitter.tweet/promoted-metrics
+      :twitter.tweet/public-metrics
+      :twitter.tweet/referenced-tweets
+      :twitter.tweet/reply-settings
+      :twitter.tweet/source
+      :twitter.tweet/text
+      :twitter.tweet/withheld]}]}
+  (let [expects      (-> env
+                         :com.wsscode.pathom3.connect.planner/node
+                         :com.wsscode.pathom3.connect.planner/expects)
+        field-params (expects->fields expects
+                       {})]
+    (p-> (request env
+           {:path         (str "/users/by/username/" username)
+            :query-params field-params})
+         (convert-back expects {}))))
 
 (def token (System/getenv "TWITTER_TOKEN"))
 
@@ -101,6 +151,7 @@
        ::p.a.eql/parallel? true}
       (pci/register
         [get-tweet
+         get-user
          tweet-stats
          (pbir/equivalence-resolver :twitter.user/screen-name :twitter.user/username)
          (pbir/equivalence-resolver :twitter.tweet/favorite-count :twitter.tweet/like-count)])
@@ -122,6 +173,22 @@
       :twitter.tweet/source
       :twitter.tweet/retweet-count
       :twitter.tweet/favorite-count])
+
+  ; endregion
+
+  ; region query demo relevant user
+
+  @(p.a.eql/process env
+     {:twitter.user/screen-name "Twitter"}
+     [:twitter.user/profile-image-url
+      :twitter.user/screen-name
+      :twitter.user/name
+      :twitter.user/verified
+
+      ; new fields
+      :twitter.user/description
+      ;:twitter.user/following
+      ])
 
   ; endregion
 

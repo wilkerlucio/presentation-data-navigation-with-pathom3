@@ -270,6 +270,32 @@
 
   ; endregion
 
+  ; region query demo relevant user
+
+  @(p.a.eql/process env
+     {:twitter.user/screen-name "Twitter"}
+     [:twitter.user/profile-image-url
+      :twitter.user/screen-name
+      :twitter.user/name
+      :twitter.user/verified
+
+      ; new fields
+      :twitter.user/description
+      :twitter.user/following])
+
+  ; endregion
+
+  ; region query demo user view
+
+  @(p.a.eql/process env
+     {:twitter.user/screen-name "Twitter"}
+     [:twitter.user/profile-image-url
+      :twitter.user/screen-name
+      :twitter.user/name
+      :twitter.user/verified])
+
+  ; endregion
+
   (m/rewrite res
     (m/map-of
       (m/pred string? ?k) (m/or (m/pred map? (m/cata ?v))
