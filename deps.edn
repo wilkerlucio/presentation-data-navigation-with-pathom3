@@ -9,4 +9,5 @@
   io.pedestal/pedestal.jetty       {:mvn/version "0.5.9"}
   io.pedestal/pedestal.service     {:mvn/version "0.5.9"}
   meander/epsilon                  {:mvn/version "0.0.602"}
+  com.wsscode/transito             {:mvn/version "2021.07.04"}
   org.clojure/clojure              {:mvn/version "1.11.0-alpha2"}}}
