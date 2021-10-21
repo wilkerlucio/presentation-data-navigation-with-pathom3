@@ -2,7 +2,8 @@
   (:require
     [com.wsscode.pathom3.connect.operation :as pco]
     [com.wsscode.pathom3.connect.indexes :as pci]
-    [com.wsscode.pathom3.interface.eql :as p.eql]))
+    [com.wsscode.pathom3.interface.eql :as p.eql]
+    [com.wsscode.presentations.pathom3-data-nav.pathom-server :as ps]))
 
 (def address-db
   {1 {:acme.address/zipcode        "234155-11"
@@ -14,15 +15,13 @@
 
 (pco/defresolver user-shipping-address [{:acme.user/keys [id]}]
   {::pco/output
-   [{:acme.user/shipping-address
-     [:acme.address/zipcode
-      :acme.address/street-address
-      :acme.address/number
-      :acme.address/city
-      :acme.address/state
-      :acme.address/complement]}]}
-  {:acme.user/shipping-address
-   (get address-db id)})
+   [:acme.address/zipcode
+    :acme.address/street-address
+    :acme.address/number
+    :acme.address/city
+    :acme.address/state
+    :acme.address/complement]}
+  (get address-db id))
 
 (def registry
   [user-shipping-address])
@@ -30,16 +29,13 @@
 (def env
   (pci/register registry))
 
-(def request
-  (p.eql/boundary-interface env))
-
 (comment
-  (reset! cache* {})
+  (ps/start-server env {::ps/port 3011})
 
   (user-shipping-address)
   (p.eql/process env
     {:acme.user/id 1}
-    [:acme.user/shipping-address])
+    [:acme.address/street-address])
 
   (p.eql/process env
     {:acme.user/full-name "Wilker Lucio da Silva"}
