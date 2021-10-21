@@ -1,58 +1,48 @@
 (ns com.wsscode.presentations.pathom3-data-nav.micro-services.customer
-  (:require [acme.user :as-alias user]
-            [faker.name]
-            [com.wsscode.pathom3.connect.operation :as pco]
+  (:require [com.wsscode.pathom3.connect.operation :as pco]
             [com.wsscode.pathom3.connect.indexes :as pci]
-            [com.wsscode.pathom3.interface.eql :as p.eql]))
+            [com.wsscode.pathom3.interface.eql :as p.eql]
+            [com.wsscode.presentations.pathom3-data-nav.pathom-server :as ps]))
 
-(pco/defresolver user-by-id [{::user/keys [id]}]
+(def users
+  {1 {:acme.user/first-name "Wilker"
+      :acme.user/last-name  "Silva"
+      :acme.user/cpf        "04203455464"
+      :acme.user/phone      "+551141255421412"}})
+
+(pco/defresolver user-by-id [{:acme.user/keys [id]}]
   {::pco/output
-   [::user/first-name
-    ::user/last-name]
-
-   ::pco/cache-store
-   :cache/persistent}
-  {::user/first-name (faker.name/first-name)
-   ::user/last-name  (faker.name/last-name)})
-
-(pco/defresolver full-name [{::user/keys [first-name last-name]}]
-  {::user/full-name (str first-name " " last-name)})
-
-(pco/defresolver all-users []
-  {::pco/output
-   [{::user/all-users
-     [::user/id]}]}
-  {::user/all-users
-   (into []
-         (map #(array-map ::user/id %))
-         (range 10))})
+   [:acme.user/first-name
+    :acme.user/last-name
+    :acme.user/cpf
+    :acme.user/phone]}
+  (get users id))
 
 (def registry
-  [user-by-id full-name all-users])
-
-(defonce cache* (atom {}))
+  [user-by-id])
 
 (def env
-  (-> {:cache/persistent cache*}
-      (pci/register registry)))
+  (pci/register registry))
 
 (def request
   (p.eql/boundary-interface env))
 
 (comment
-  (p.eql/process env
-    [{::user/all-users
-      [::user/full-name]}])
+  (ps/start-server request {::ps/port 3010})
 
   (p.eql/process env
-    {::user/id 1}
-    [::user/first-name
-     ::user/last-name])
+    {:acme.user/id 1}
+    [:acme.user/first-name
+     :acme.user/last-name]))
 
-  (p.eql/process env
-    {::user/full-name "Wilker Lucio da Silva"}
-    [::user/last-name])
+; no lugar de:
 
-  (->> ((requiring-resolve 'faker.name/names))
-       (take 10)))
+{:meu-evento :pipo.domain/user}
 
+; fazer:
+
+{:meu-evento
+ [:pipo.user/name
+  :pipo.user/email
+  {:pipo.user/address
+   [:pipp.address/street-number]}]}
