@@ -9,6 +9,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Deps: com.cognitect/transit-java:1.0.343" level="project" />
+    <orderEntry type="library" name="Deps: org.clojure/data.json:2.4.0" level="project" />
     <orderEntry type="library" name="Deps: org.clojure/clojure:1.11.0-alpha2" level="project" />
     <orderEntry type="library" name="Deps: cljfx:1.7.16" level="project" />
     <orderEntry type="library" name="Deps: org.openjfx/javafx-base$mac:17.0.0.1" level="project" />
@@ -50,10 +51,10 @@
     <orderEntry type="library" name="Deps: com.wsscode/log:325675" level="project" />
     <orderEntry type="library" name="Deps: org.openjfx/javafx-media$mac:17.0.0.1" level="project" />
     <orderEntry type="library" name="Deps: com.fasterxml.jackson.core/jackson-core:2.12.4" level="project" />
-    <orderEntry type="library" name="Deps: djblue/portal:0.16.2" level="project" />
+    <orderEntry type="library" name="Deps: djblue/portal:0.16.3" level="project" />
     <orderEntry type="library" name="Deps: org.ow2.asm/asm:5.2" level="project" />
     <orderEntry type="library" name="Deps: org.openjfx/javafx-graphics:17.0.0.1" level="project" />
-    <orderEntry type="library" name="Deps: com.wsscode/pathom3:ccd6b5" level="project" />
+    <orderEntry type="library" name="Deps: Local com.wsscode/pathom3" level="project" />
     <orderEntry type="library" name="Deps: com.cognitect/transit-js:0.8.874" level="project" />
     <orderEntry type="library" name="Deps: clj-tuple:0.2.2" level="project" />
     <orderEntry type="library" name="Deps: com.taoensso/truss:1.6.0" level="project" />

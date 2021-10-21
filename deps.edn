@@ -2,8 +2,9 @@
  ["src/main"]
 
  :deps
- {org.clojure/clojure {:mvn/version "1.11.0-alpha2"}
-  com.wsscode/pathom3 {:mvn/version "2021.10.20-alpha"}
-  cheshire/cheshire   {:mvn/version "5.10.1"}
-  meander/epsilon     {:mvn/version "0.0.602"}
-  http-kit/http-kit   {:mvn/version "2.5.3"}}}
+ {cheshire/cheshire                {:mvn/version "5.10.1"}
+  com.wsscode/pathom-viz-connector {:mvn/version "2021.10.16"}
+  com.wsscode/pathom3              {:mvn/version "2021.10.20-alpha"}
+  http-kit/http-kit                {:mvn/version "2.5.3"}
+  meander/epsilon                  {:mvn/version "0.0.602"}
+  org.clojure/clojure              {:mvn/version "1.11.0-alpha2"}}}
