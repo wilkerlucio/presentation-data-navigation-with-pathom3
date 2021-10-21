@@ -91,7 +91,7 @@
          (convert-back expects
            {"user" (comp first #(get % "users"))}))))
 
-(pco/defresolver tweet-stats [{:keys [twitter.tweet/public-metrics]}]
+(pco/defresolver tweet-metrics [{:keys [twitter.tweet/public-metrics]}]
   {:twitter.tweet/retweet-count (get public-metrics "retweet_count")
    :twitter.tweet/like-count    (get public-metrics "like_count")})
 
@@ -144,6 +144,12 @@
             :query-params field-params})
          (convert-back expects {}))))
 
+(pco/defresolver user-metrics [{:keys [twitter.user/public-metrics]}]
+  {:twitter.user/followers-count (get public-metrics "followers_count")
+   :twitter.user/following-count (get public-metrics "following_count")
+   :twitter.user/tweet-count (get public-metrics "tweet_count")
+   :twitter.user/listed-count (get public-metrics "listed_count")})
+
 (def token (System/getenv "TWITTER_TOKEN"))
 
 (def env
@@ -152,8 +158,10 @@
       (pci/register
         [get-tweet
          get-user
-         tweet-stats
+         tweet-metrics
+         user-metrics
          (pbir/equivalence-resolver :twitter.user/screen-name :twitter.user/username)
+         (pbir/equivalence-resolver :twitter.user/friends-count :twitter.user/following-count)
          (pbir/equivalence-resolver :twitter.tweet/favorite-count :twitter.tweet/like-count)])
       ((requiring-resolve 'com.wsscode.pathom.viz.ws-connector.pathom3/connect-env)
        "twitter")))
@@ -188,6 +196,26 @@
       ; new fields
       :twitter.user/description
       ;:twitter.user/following
+      ])
+
+  ; endregion
+
+  ; region query demo user view
+
+  @(p.a.eql/process env
+     {:twitter.user/screen-name "Twitter"}
+     [:twitter.user/profile-image-url
+      :twitter.user/screen-name
+      :twitter.user/name
+      :twitter.user/verified
+      ; not available - :twitter.user/profile-background-image-url
+      :twitter.user/description
+      :twitter.user/location
+      :twitter.user/url
+      :twitter.user/created-at
+      :twitter.user/followers-count
+      :twitter.user/friends-count
+      ; user birthday isn't available
       ])
 
   ; endregion

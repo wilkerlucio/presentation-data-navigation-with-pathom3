@@ -113,6 +113,7 @@
     :twitter.tweet/source
     :twitter.tweet/text
     :twitter.tweet/truncated
+
     :twitter.user/contributors-enabled
     :twitter.user/created-at
     :twitter.user/default-profile
@@ -250,7 +251,7 @@
                      get-user-by-screen-name
                      user-timeline-by-screen-name])
       ((requiring-resolve 'com.wsscode.pathom.viz.ws-connector.pathom3/connect-env)
-       "twitter")))
+       "twitter v1")))
 
 (comment
 
@@ -292,7 +293,16 @@
      [:twitter.user/profile-image-url
       :twitter.user/screen-name
       :twitter.user/name
-      :twitter.user/verified])
+      :twitter.user/verified
+      :twitter.user/profile-background-image-url
+      :twitter.user/description
+      :twitter.user/location
+      :twitter.user/url
+      :twitter.user/created-at
+      :twitter.user/followers-count
+      :twitter.user/friends-count
+      ; user birthday isn't available
+      ])
 
   ; endregion
 
