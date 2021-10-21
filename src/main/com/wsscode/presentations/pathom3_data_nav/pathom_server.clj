@@ -50,7 +50,7 @@
                   [(body-params/body-params
                      (body-params/default-parser-map :transit-options {:handlers pcot/read-handlers}))
                    (server/transit-body-interceptor
-                     ::transit-json-body
+                     ::server/transit-json-body
                      "application/transit+json"
                      :json
                      {:handlers pcot/write-handlers})
