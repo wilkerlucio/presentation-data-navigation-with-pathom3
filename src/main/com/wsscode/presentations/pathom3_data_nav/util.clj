@@ -44,7 +44,7 @@
       (http/request opts
         (fn [{:keys [error] :as response}]
           (if error
-            (reject response)
+            (reject (ex-info (str "HTTP Error:" error) {:response response}))
             (resolve response)))))))
 
 (defn make-request [prefix]
