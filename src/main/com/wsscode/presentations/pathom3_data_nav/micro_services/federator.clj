@@ -7,7 +7,6 @@
             [com.wsscode.presentations.pathom3-data-nav.micro-services.shipping :as mr.shipping]
             [com.wsscode.pathom3.connect.foreign :as pcf]
             [com.wsscode.pathom3.interface.eql :as p.eql]
-            [com.wsscode.pathom3.interface.async.eql :as p.a.eql]
             [com.wsscode.presentations.pathom3-data-nav.pathom-server :as ps]))
 
 (defn start-all []
@@ -24,13 +23,7 @@
 (def env
   (-> {:com.wsscode.pathom3.connect.planner/plan-cache* plan-cache*}
       (pci/register
-        [ ;(pcf/foreign-register mr.customer/request)
-         ;(pcf/foreign-register mr.line-items/request)
-         ;(pcf/foreign-register mr.order/request)
-         ;(pcf/foreign-register mr.product/request)
-         ;(pcf/foreign-register mr.shipping/request)
-
-         (pcf/foreign-register (ps/server-handler 3011))
+        [(pcf/foreign-register (ps/server-handler 3011))
          (pcf/foreign-register (ps/server-handler 3012))
          (pcf/foreign-register (ps/server-handler 3013))
          (pcf/foreign-register (ps/server-handler 3014))
@@ -39,9 +32,6 @@
        "debug")))
 
 (comment
-
-  {:acme.order/id {}}
-
   (p.eql/process env
     {:acme.order/id 1628545763873}
     [:acme.order/id

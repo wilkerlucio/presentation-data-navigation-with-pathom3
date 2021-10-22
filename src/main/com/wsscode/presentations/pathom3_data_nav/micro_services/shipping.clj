@@ -34,17 +34,7 @@
   (p.eql/boundary-interface env))
 
 (comment
-  (ps/start-server env {::ps/port 3014})
-
-  (user-shipping-address)
   (p.eql/process env
     {:acme.user/id 1}
-    [:acme.address/street-address])
-
-  (p.eql/process env
-    {:acme.user/full-name "Wilker Lucio da Silva"}
-    [:acme.user/last-name])
-
-  (->> ((requiring-resolve 'faker.address /))
-       (take 10)))
+    [:acme.address/street-address]))
 

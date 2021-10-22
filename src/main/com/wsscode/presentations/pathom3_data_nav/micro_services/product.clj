@@ -28,8 +28,6 @@
   (p.eql/boundary-interface env))
 
 (comment
-  (ps/start-server env {::ps/port 3013})
-
   (p.eql/process env
     {:acme.product/id 2}
     [:acme.product/title]))
