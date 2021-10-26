@@ -14,6 +14,9 @@
       (u/namespace-keys "twitter.tweet")
       (u/pull-one :twitter.tweet/user "twitter.user")))
 
+; inputs are always maps
+; outputs are always maps
+
 (pco/defresolver get-tweet
   [env {:twitter.tweet/keys [id]}]
   {::pco/output
@@ -308,34 +311,4 @@
       ])
 
   ; endregion
-
-  (m/rewrite res
-    (m/map-of
-      (m/pred string? ?k) (m/or (m/pred map? (m/cata ?v))
-                            ?v))
-    {(keyword ?k) ?v})
-
-  (-> res
-      (namespace-keys "twitter.user")
-      (pull-one :twitter.user/status "twitter.tweet")
-      (pf.eql/data->query))
-
-  @(p-> (request env {:path         "https://api.twitter.com/1.1/statuses/show.json"
-                      :query-params {:id "210462857140252672"}})
-        :body
-        json/parse-string
-        (namespace-keys "twitter.tweet")
-        (pull-one :twitter.tweet/user "twitter.user"))
-
-  (mapv adapt-tweet res)
-
-  (def res
-    (let [screen-name "Twitter"]
-      @(request env
-         {:path         "/statuses/user_timeline.json"
-          :query-params {:screen_name screen-name}})))
-
-  (def res
-    @(request env
-       {:path         "/users/show.json"
-        :query-params {:screen_name "Twitter"}})))
+  )

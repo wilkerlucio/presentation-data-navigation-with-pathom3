@@ -164,7 +164,7 @@
          (pbir/equivalence-resolver :twitter.user/friends-count :twitter.user/following-count)
          (pbir/equivalence-resolver :twitter.tweet/favorite-count :twitter.tweet/like-count)])
       ((requiring-resolve 'com.wsscode.pathom.viz.ws-connector.pathom3/connect-env)
-       "twitter")))
+       "twitter v2")))
 
 (comment
 
