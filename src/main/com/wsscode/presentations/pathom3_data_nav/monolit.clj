@@ -4,9 +4,10 @@
             [com.wsscode.presentations.pathom3-data-nav.micro-services.line-items :as mr.line-items]
             [com.wsscode.presentations.pathom3-data-nav.micro-services.order :as mr.order]
             [com.wsscode.presentations.pathom3-data-nav.micro-services.product :as mr.product]
-            [com.wsscode.presentations.pathom3-data-nav.micro-services.shipping :as mr.shipping]
             [com.wsscode.pathom3.interface.eql :as p.eql]
-            [com.wsscode.presentations.pathom3-data-nav.pathom-server :as ps]))
+            [com.wsscode.presentations.pathom3-data-nav.pathom-server :as ps]
+            [acme.order :as-alias order]
+            [acme.user :as-alias user]))
 
 (defonce plan-cache* (atom {}))
 
@@ -16,10 +17,9 @@
         [mr.customer/registry
          mr.line-items/registry
          mr.order/registry
-         mr.product/registry
-         mr.shipping/registry])
+         mr.product/registry])
       ((requiring-resolve 'com.wsscode.pathom.viz.ws-connector.pathom3/connect-env)
-       "debug")))
+       "mono")))
 
 (comment
   (p.eql/process env
@@ -35,8 +35,8 @@
      :acme.order/discount
      :acme.order/items-total
      :acme.order/grand-total
-     :acme.user/cpf
-     :acme.user/phone])
+     :acme.user/phone
+     :acme.user/cpf])
 
   (p.eql/process env
     {:acme.order/id 1628545763873}

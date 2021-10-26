@@ -73,10 +73,10 @@
     (swap! servers* assoc port server)
     server))
 
-(defn server-handler [port]
+(defn http-handler [graph-endpoint]
   (fn [tx]
     (-> @(http/request
-           {:url     (str "http://localhost:" port "/graph")
+           {:url     graph-endpoint
             :headers {"Accept"       "application/transit+json"
                       "Content-Type" "application/transit+json"}
             :method  :post
@@ -91,4 +91,4 @@
 (comment
   (start-server env {::port 3020})
 
-  ((server-handler 3020) [:foo]))
+  ((http-handler 3020) [:foo]))
